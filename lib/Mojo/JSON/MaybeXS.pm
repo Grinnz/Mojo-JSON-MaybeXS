@@ -2,7 +2,6 @@ package Mojo::JSON::MaybeXS;
 
 use strict;
 use warnings;
-use Carp 'croak';
 use Mojo::Util 'monkey_patch';
 use Mojo::JSON;
 use JSON::MaybeXS;

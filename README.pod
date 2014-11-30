@@ -25,7 +25,7 @@ incompatibilities:
 =head2 Boolean Stringification
 
 If L<Cpanel::JSON::XS> is loaded by L<JSON::MaybeXS> (the default if available),
-the L<Mojo::JSON(true)> and L<Mojo::JSON(false)> booleans will stringify to
+the L<Mojo::JSON/true> and L<Mojo::JSON/false> booleans will stringify to
 C<"true"> and C<"false">. However, when using L<JSON::XS>, or L<JSON::PP>, they
 will stringify to C<"1"> or C<"0">, like in L<Mojo::JSON>.
 

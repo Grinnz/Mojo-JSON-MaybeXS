@@ -19,8 +19,8 @@ monkey_patch 'Mojo::JSON', 'decode_json', sub { $BINARY->decode(shift) };
 monkey_patch 'Mojo::JSON', 'to_json',   sub { $TEXT->encode(shift) };
 monkey_patch 'Mojo::JSON', 'from_json', sub { $TEXT->decode(shift) };
 
-monkey_patch 'Mojo::JSON', 'true',  sub { JSON->true };
-monkey_patch 'Mojo::JSON', 'false', sub { JSON->false };
+monkey_patch 'Mojo::JSON', 'true',  sub () { JSON->true };
+monkey_patch 'Mojo::JSON', 'false', sub () { JSON->false };
 
 =head1 NAME
 

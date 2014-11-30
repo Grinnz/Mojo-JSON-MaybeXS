@@ -14,7 +14,6 @@ use Test::More;
 use Mojo::JSON::MaybeXS;
 use Mojo::ByteStream 'b';
 use Mojo::JSON qw(decode_json encode_json false from_json j to_json true);
-use Mojo::Util 'encode';
 use Scalar::Util 'dualvar';
 
 # Decode array
@@ -316,57 +315,5 @@ is encode_json($mixed), '[3,"three","3",0,"0"]',
 
 # "null"
 is j('null'), undef, 'decode null';
-
-# Errors
-eval { decode_json 'test' };
-like $@, qr/'true' expected, at character offset 0/, 'right error';
-eval { decode_json b('["\\ud800"]')->encode };
-like $@, qr/malformed JSON string, neither tag, array, object, number, string or atom, at character offset 0/,
-  'right error';
-eval { decode_json b('["\\udf46"]')->encode };
-like $@, qr/malformed JSON string, neither tag, array, object, number, string or atom, at character offset 0/,
-  'right error';
-eval { decode_json '[[]' };
-like $@, qr/, or ] expected while parsing array, at character offset 3/,
-  'right error';
-eval { decode_json '{{}' };
-like $@, qr/'"' expected, at character offset 1/, 'right error';
-eval { decode_json "[\"foo\x00]" };
-like $@, qr/unexpected end of string while parsing JSON string, at character offset 5/,
-  'right error';
-eval { decode_json '{"foo":"bar"{' };
-like $@, qr/, or } expected while parsing object\/hash, at character offset 12/,
-  'right error';
-eval { decode_json '{"foo""bar"}' };
-like $@, qr/':' expected, at character offset 6/, 'right error';
-eval { decode_json '[[]...' };
-like $@, qr/, or ] expected while parsing array, at character offset 3/,
-  'right error';
-eval { decode_json '{{}...' };
-like $@, qr/'"' expected, at character offset 1/, 'right error';
-eval { decode_json '[nan]' };
-like $@, qr/'null' expected, at character offset 1/, 'right error';
-eval { decode_json '["foo]' };
-like $@, qr/unexpected end of string while parsing JSON string, at character offset 6/,
-  'right error';
-eval { decode_json '{"foo":"bar"}lala' };
-like $@, qr/garbage after JSON object, at character offset 13/, 'right error';
-eval { decode_json '' };
-like $@, qr/malformed JSON string, neither tag, array, object, number, string or atom, at character offset 0/,
-  'right error';
-eval { decode_json "[\"foo\",\n\"bar\"]lala" };
-like $@, qr/garbage after JSON object, at character offset 14/, 'right error';
-eval { decode_json "[\"foo\",\n\"bar\",\n\"bazra\"]lalala" };
-like $@, qr/garbage after JSON object, at character offset 23/, 'right error';
-eval { decode_json '["♥"]' };
-like $@, qr/Wide character in subroutine entry/, 'right error';
-eval { decode_json encode('Shift_JIS', 'やった') };
-like $@, qr/malformed JSON string, neither tag, array, object, number, string or atom, at character offset 0/,
-  'right error';
-is j('{'), undef, 'syntax error';
-eval { decode_json "[\"foo\",\n\"bar\",\n\"bazra\"]lalala" };
-like $@, qr/garbage after JSON object, at character offset 23/, 'right error';
-eval { from_json "[\"foo\",\n\"bar\",\n\"bazra\"]lalala" };
-like $@, qr/garbage after JSON object, at character offset 23/, 'right error';
 
 done_testing();

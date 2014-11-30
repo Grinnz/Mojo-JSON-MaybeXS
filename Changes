@@ -1,4 +1,5 @@
 {{$NEXT}}
+  - Improved testing for JSON::XS and JSON::PP
 
 0.001     2014-11-30 02:27:46-05:00 America/New_York
   - First release

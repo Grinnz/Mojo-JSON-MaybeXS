@@ -1,15 +1,12 @@
 use Mojo::Base -strict;
 
 use Test::Without::Module 'Cpanel::JSON::XS', 'JSON::XS';
+use if !eval { require JSON::PP; 1 }, 'Test::More', skip_all => 'No JSON::PP';
 use Test::More;
 use Mojo::JSON::MaybeXS;
 use Mojo::ByteStream 'b';
 use Mojo::JSON qw(decode_json encode_json false from_json j to_json true);
 use Mojo::Util 'encode';
-
-unless (eval { require JSON::PP; 1 }) {
-	plan skip_all => 'No JSON::PP';
-}
 
 is(JSON::MaybeXS::JSON, 'JSON::PP', 'Correct JSON class');
 

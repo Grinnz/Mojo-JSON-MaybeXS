@@ -244,6 +244,13 @@ is_deeply $hash, {foo => 'c:\progra~1\mozill~1\firefox.exe'},
 $bytes = encode_json(['a' x 32768]);
 is_deeply decode_json($bytes), ['a' x 32768], 'successful roundtrip';
 
+# u2028, u2029 and slash
+#$bytes = encode_json ["\x{2028}test\x{2029}123</script>"];
+#is $bytes, '["\u2028test\u2029123<\/script>"]',
+#  'escaped u2028, u2029 and slash';
+#is_deeply decode_json($bytes), ["\x{2028}test\x{2029}123</script>"],
+#  'successful roundtrip';
+
 # JSON without UTF-8 encoding
 is_deeply from_json('["♥"]'), ['♥'], 'characters decoded';
 is to_json(['♥']), '["♥"]', 'characters encoded';
@@ -312,6 +319,12 @@ is encode_json($mixed), '[3,"three","3",0,"0"]',
   'all have been detected correctly';
 is encode_json($mixed), '[3,"three","3",0,"0"]',
   'all have been detected correctly again';
+
+# "inf" and "nan"
+#like encode_json({test => 9**9**9}), qr/^{"test":".*"}$/,
+#  'encode "inf" as string';
+#like encode_json({test => -sin(9**9**9)}), qr/^{"test":".*"}$/,
+#  'encode "nan" as string';
 
 # "null"
 is j('null'), undef, 'decode null';

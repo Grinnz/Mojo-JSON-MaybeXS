@@ -3,8 +3,8 @@ package Mojo::JSON::MaybeXS;
 use strict;
 use warnings;
 use Mojo::Util 'monkey_patch';
-use Mojo::JSON;
-use JSON::MaybeXS;
+use JSON::MaybeXS 'JSON';
+use Mojo::JSON ();
 
 our $VERSION = 0.003;
 

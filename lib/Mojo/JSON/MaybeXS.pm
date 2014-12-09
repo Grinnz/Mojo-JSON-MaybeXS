@@ -47,11 +47,12 @@ properly exported.
 L<JSON::MaybeXS> is used with the options C<allow_nonref>, C<allow_unknown>,
 C<allow_blessed>, and C<convert_blessed>. C<allow_nonref> allows encoding and
 decoding of bare values outside of hash/array references, since L<Mojo::JSON>
-does not prevent this. The other options prevent the encoder from blowing up
-when encountering values that cannot be represented in JSON to better match the
-behavior of L<Mojo::JSON>; in most cases, where L<Mojo::JSON> would stringify a
-reference, L<JSON::MaybeXS> with these settings will encode it to C<null>. See
-below for more specifics.
+does not prevent this, in accordance with
+L<RFC 7159|http://tools.ietf.org/html/rfc7159>. The other options prevent the
+encoder from blowing up when encountering values that cannot be represented in
+JSON to better match the behavior of L<Mojo::JSON>; in most cases, where
+L<Mojo::JSON> would stringify a reference, L<JSON::MaybeXS> with these settings
+will encode it to C<null>. See below for more specifics.
 
 L<JSON::MaybeXS> may load different modules behind the scenes depending on what
 is available, and these modules have slightly different behavior from

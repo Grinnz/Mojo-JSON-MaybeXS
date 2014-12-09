@@ -102,7 +102,7 @@ L<Mojo::JSON> currently escapes the slash character C</> for security reasons,
 as well as the unicode characters C<u2028> and C<u2029>, while L<JSON::MaybeXS>
 does not. This does not affect decoding of the resulting JSON.
 
- print encode_json(["/\x{2028}/\x{2029"]);
+ print encode_json(["/\x{2028}/\x{2029}"]);
  # Mojo::JSON: ["\/\u2028\/\u2029"]
  # JSON::MaybeXS: ["/ / "]
  # Both decode to arrayref containing: "/\x{2028}/\x{2029}"

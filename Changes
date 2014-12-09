@@ -1,5 +1,4 @@
 {{$NEXT}}
-  - Update metadata
   - Enable allow_unknown option
   - Update docs regarding handling of unblessed references
   - Restore tests related to scalar references

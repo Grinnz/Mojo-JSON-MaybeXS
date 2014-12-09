@@ -9,6 +9,9 @@ Mojo::JSON::MaybeXS - use JSON::MaybeXS as the JSON encoder for Mojolicious
  use Mojo::JSON::MaybeXS;
  use Mojo::JSON qw/encode_json decode_json true false/;
  
+ use Mojo::JSON::MaybeXS;
+ use Mojolicious::Lite;
+ 
  package My::Mojo::App;
  use Mojo::JSON::MaybeXS;
  use Mojo::Base 'Mojolicious';

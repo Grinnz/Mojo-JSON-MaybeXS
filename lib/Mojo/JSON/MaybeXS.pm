@@ -90,8 +90,8 @@ or C<1> and will encode them to C<true> or C<false> depending on their boolean
 value. Other references (code, filehandle, etc) will be stringified.
 
  print encode_json([\'asdf', sub { 1 }]);
- # Mojo::JSON: [true, "CODE(0x11d1650)"]
- # JSON::MaybeXS: [null, null]
+ # Mojo::JSON: [true,"CODE(0x11d1650)"]
+ # JSON::MaybeXS: [null,null]
 
 =head2 Escapes
 

@@ -25,6 +25,12 @@ properly exported.
 
 =head1 CAVEATS
 
+L<JSON::MaybeXS> may load different modules behind the scenes depending on what
+is available, and these modules have slightly different behavior from
+L<Mojo::JSON> and occasionally from each other. References to the behavior of
+L<JSON::MaybeXS> below are actually describing the behavior shared among the
+modules it loads.
+
 L<JSON::MaybeXS> is used with the options C<allow_nonref>, C<allow_unknown>,
 C<allow_blessed>, and C<convert_blessed>. C<allow_nonref> allows encoding and
 decoding of bare values outside of hash/array references, since L<Mojo::JSON>
@@ -35,10 +41,7 @@ JSON to better match the behavior of L<Mojo::JSON>; in most cases, where
 L<Mojo::JSON> would stringify a reference, L<JSON::MaybeXS> with these settings
 will encode it to C<null>. See below for more specifics.
 
-L<JSON::MaybeXS> may load different modules behind the scenes depending on what
-is available, and these modules have slightly different behavior from
-L<Mojo::JSON> and occasionally from each other. As of this writing, the author
-has found the following incompatibilities:
+As of this writing, the author has found the following incompatibilities:
 
 =head2 Boolean Stringification
 

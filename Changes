@@ -1,5 +1,8 @@
 {{$NEXT}}
   - Update metadata
+  - Enable allow_unknown option
+  - Update docs regarding handling of unblessed references
+  - Restore tests related to scalar references
 
 0.004     2014-12-05 12:30:04-05:00 America/New_York
   - Removed Test::Without::Module testing dependency

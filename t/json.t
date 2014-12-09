@@ -271,16 +271,16 @@ is_deeply decode_json($bytes), {just => 'works'}, 'successful roundtrip';
 # Boolean shortcut
 is encode_json({true  => \1}), '{"true":true}',   'encode {true => \1}';
 is encode_json({false => \0}), '{"false":false}', 'encode {false => \0}';
-#$bytes = 'some true value';
-#is encode_json({true => \!!$bytes}), '{"true":true}',
-#  'encode true boolean from double negated reference';
-#is encode_json({true => \$bytes}), '{"true":true}',
-#  'encode true boolean from reference';
-#$bytes = '';
-#is encode_json({false => \!!$bytes}), '{"false":false}',
-#  'encode false boolean from double negated reference';
-#is encode_json({false => \$bytes}), '{"false":false}',
-#  'encode false boolean from reference';
+$bytes = 'some true value';
+is encode_json({true => \!!$bytes}), '{"true":true}',
+  'encode true boolean from double negated reference';
+is encode_json({true => \$bytes}), '{"true":null}',
+  'encode true boolean from reference';
+$bytes = '';
+is encode_json({false => \!!$bytes}), '{"false":null}',
+  'encode false boolean from double negated reference';
+is encode_json({false => \$bytes}), '{"false":null}',
+  'encode false boolean from reference';
 
 # Booleans in different contexts
 ok true, 'true';

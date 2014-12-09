@@ -9,9 +9,9 @@ use Mojo::JSON ();
 our $VERSION = '0.005';
 
 my $BINARY = JSON::MaybeXS->new(utf8 => 1, allow_nonref => 1,
-	allow_blessed => 1, convert_blessed => 1);
+	allow_unknown => 1, allow_blessed => 1, convert_blessed => 1);
 my $TEXT = JSON::MaybeXS->new(utf8 => 0, allow_nonref => 1,
-	allow_blessed => 1, convert_blessed => 1);
+	allow_unknown => 1, allow_blessed => 1, convert_blessed => 1);
 
 monkey_patch 'Mojo::JSON', 'encode_json', sub { $BINARY->encode(shift) };
 monkey_patch 'Mojo::JSON', 'decode_json', sub { $BINARY->decode(shift) };
@@ -46,7 +46,8 @@ before L<Mojo::JSON> so the new functions will be properly exported.
 L<JSON::MaybeXS> may load different modules depending on what is available, and
 these modules have slightly different behavior from L<Mojo::JSON> and
 occasionally from each other. As of this writing, the author has found the
-following incompatibilities:
+following incompatibilities, using the L<JSON::MaybeXS> settings
+C<allow_nonref>, C<allow_unknown>, C<allow_blessed>, and C<convert_blessed>:
 
 =head2 Boolean Stringification
 
@@ -72,15 +73,15 @@ L<Mojo::JSON> will stringify the object.
 
 =head2 Unblessed References
 
-L<JSON::MaybeXS> does not allow unblessed references other than hash and array
-references or references to the integers C<0> and C<1>, and will throw an
-exception if attempting to encode one. L<Mojo::JSON> will treat all scalar
-references the same as references to C<0> or C<1> and will encode them to
-C<true> or C<false> depending on their boolean value.
+L<JSON::MaybeXS> does not allow unblessed references other than to hashes,
+arrays, or the scalar values C<0> and C<1>, and will encode them to C<null>.
+L<Mojo::JSON> will treat all scalar references the same as references to C<0>
+or C<1> and will encode them to C<true> or C<false> depending on their boolean
+value. Other references (code, filehandle, etc) will be stringified.
 
- print encode_json([\'asdf']);
- # Mojo::JSON: [true]
- # JSON::MaybeXS: dies
+ print encode_json([\'asdf', sub { 1 }]);
+ # Mojo::JSON: [true, "CODE(0x11d1650)"]
+ # JSON::MaybeXS: [null, null]
 
 =head2 Escapes
 

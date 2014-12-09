@@ -47,8 +47,8 @@ L<JSON::MaybeXS> is used with the options C<allow_nonref>, C<allow_unknown>,
 C<allow_blessed>, and C<convert_blessed>. This allows the encoder to avoid
 blowing up when encountering values that cannot be represented in JSON since
 L<Mojo::JSON> does not either; in most cases, where L<Mojo::JSON> would
-stringify a value, JSON::MaybeXS with these settings will encode it to C<null>.
-See below for more specifics.
+stringify a value, L<JSON::MaybeXS> with these settings will encode it to
+C<null>. See below for more specifics.
 
 L<JSON::MaybeXS> may load different modules behind the scenes depending on what
 is available, and these modules have slightly different behavior from

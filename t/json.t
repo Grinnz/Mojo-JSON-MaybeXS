@@ -290,11 +290,11 @@ ok !false, 'false';
 is false, 0, 'right string value';
 is false + 0, 0, 'right numeric value';
 
+# Upgraded numbers
+my $num = 3;
+my $str = "$num";
 if (Mojo::JSON::MaybeXS::JSON eq 'Cpanel::JSON::XS'
   and $Cpanel::JSON::XS::VERSION >= 3.0108) {
-	# Upgraded numbers
-	my $num = 3;
-	my $str = "$num";
 	is encode_json({test => [$num, $str]}), '{"test":[3,"3"]}',
 	  'upgraded number detected';
 	$num = 3.21;
@@ -308,8 +308,7 @@ if (Mojo::JSON::MaybeXS::JSON eq 'Cpanel::JSON::XS'
 }
 
 # Upgraded string
-my $str = "bar";
-my $num;
+$str = "bar";
 { no warnings 'numeric'; $num = 23 + $str }
 is encode_json({test => [$num, $str]}), '{"test":[23,"bar"]}',
   'upgraded string detected';

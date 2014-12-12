@@ -322,10 +322,10 @@ is encode_json($mixed), '[3,"three","3",0,"0"]',
   'all have been detected correctly again';
 
 # "inf" and "nan"
-is encode_json({test => 9**9**9}), '{"test":null}',
-  'encode "inf" as string';
-is encode_json({test => -sin(9**9**9)}), '{"test":null}',
-  'encode "nan" as string';
+like encode_json({test => 9**9**9}), qr/^{"test":(null|".*")}$/,
+  'encode "inf" as null or string';
+like encode_json({test => -sin(9**9**9)}), qr/^{"test":(null|".*")}$/,
+  'encode "nan" as null or string';
 
 # "null"
 is j('null'), undef, 'decode null';

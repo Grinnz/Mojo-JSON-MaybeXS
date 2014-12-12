@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.006     2014-12-12 10:21:25-05:00 America/New_York
   - Preload JSON booleans for true and false subs
   - Updated tests and documentation for Cpanel::JSON::XS 3.0108
     - inf and nan encoding

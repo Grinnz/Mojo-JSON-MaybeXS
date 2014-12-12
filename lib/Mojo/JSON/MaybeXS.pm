@@ -113,8 +113,7 @@ producing invalid JSON.
 
  print encode_json([9**9**9, -sin 9**9**9]);
  # Mojo::JSON: ["inf","nan"]
- # Cpanel::JSON::XS: [null,null] (or ["inf","nan"] if compiled with
- -DSTRINGIFY_INFNAN)
+ # Cpanel::JSON::XS: [null,null] (or ["inf","nan"] if compiled with -DSTRINGIFY_INFNAN)
  # JSON::XS or JSON::PP: [inf,nan]
 
 =head2 Upgraded Numbers

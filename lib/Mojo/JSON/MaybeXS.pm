@@ -105,11 +105,10 @@ does not. This does not affect decoding of the resulting JSON.
 
 L<Mojo::JSON> encodes C<inf> and C<nan> to strings, whereas L<JSON::MaybeXS>
 will encode them differently depending which module is loaded. If it loads
-L<Cpanel::JSON::XS> (the default if available) version 3.0108 or greater, it
+L<Cpanel::JSON::XS> (the default if available) version 3.0109 or greater, it
 will encode them as C<null> or strings, depending on a compilation option (the
-default is C<null>). However, older versions of L<Cpanel::JSON::XS> or any
-version of L<JSON::XS> or L<JSON::PP> will encode them as numbers (barewords)
-producing invalid JSON.
+default is C<null>). However, L<JSON::XS> or L<JSON::PP> will encode them as
+numbers (barewords) producing invalid JSON.
 
  print encode_json([9**9**9, -sin 9**9**9]);
  # Mojo::JSON: ["inf","nan"]
@@ -122,7 +121,7 @@ L<JSON::MaybeXS>, if using L<JSON::XS> or L<JSON::PP>, will attempt to guess if
 a value to be encoded is numeric or string based on its last usage. Therefore,
 using a variable containing C<13> in a string will cause it to be encoded as
 C<"13"> even if the variable itself was not changed. L<Mojo::JSON> or
-L<Cpanel::JSON::XS> version 3.0108 or greater will encode C<13> as C<13>
+L<Cpanel::JSON::XS> version 3.0109 or greater will encode C<13> as C<13>
 regardless of whether it has been used as a string.
 
  my ($num1, $num2) = (13, 14);

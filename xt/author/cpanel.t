@@ -292,15 +292,15 @@ is false + 0, 0, 'right numeric value';
 
 # Upgraded numbers
 my $num = 3;
-my $str = "3";
+my $str = "$num";
 is encode_json({test => [$num, $str]}), '{"test":[3,"3"]}',
   'upgraded number detected';
 $num = 3.21;
-$str = "3.21";
+$str = "$num";
 is encode_json({test => [$num, $str]}), '{"test":[3.21,"3.21"]}',
   'upgraded number detected';
 $str = '0 but true';
-$num = 1 + '0 but true';
+$num = 1 + $str;
 is encode_json({test => [$num, $str]}), '{"test":[1,"0 but true"]}',
   'upgraded number detected';
 
@@ -322,10 +322,10 @@ is encode_json($mixed), '[3,"three","3",0,"0"]',
   'all have been detected correctly again';
 
 # "inf" and "nan"
-#like encode_json({test => 9**9**9}), qr/^{"test":".*"}$/,
-#  'encode "inf" as string';
-#like encode_json({test => -sin(9**9**9)}), qr/^{"test":".*"}$/,
-#  'encode "nan" as string';
+is encode_json({test => 9**9**9}), '{"test":null}',
+  'encode "inf" as string';
+is encode_json({test => -sin(9**9**9)}), '{"test":null}',
+  'encode "nan" as string';
 
 # "null"
 is j('null'), undef, 'decode null';

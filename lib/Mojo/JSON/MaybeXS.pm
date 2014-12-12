@@ -12,6 +12,8 @@ my $BINARY = JSON::MaybeXS->new(utf8 => 1, allow_nonref => 1,
 	allow_unknown => 1, allow_blessed => 1, convert_blessed => 1);
 my $TEXT = JSON::MaybeXS->new(utf8 => 0, allow_nonref => 1,
 	allow_unknown => 1, allow_blessed => 1, convert_blessed => 1);
+my $TRUE = JSON->true;
+my $FALSE = JSON->false;
 
 monkey_patch 'Mojo::JSON', 'encode_json', sub { $BINARY->encode(shift) };
 monkey_patch 'Mojo::JSON', 'decode_json', sub { $BINARY->decode(shift) };
@@ -19,8 +21,8 @@ monkey_patch 'Mojo::JSON', 'decode_json', sub { $BINARY->decode(shift) };
 monkey_patch 'Mojo::JSON', 'to_json',   sub { $TEXT->encode(shift) };
 monkey_patch 'Mojo::JSON', 'from_json', sub { $TEXT->decode(shift) };
 
-monkey_patch 'Mojo::JSON', 'true',  sub () { JSON->true };
-monkey_patch 'Mojo::JSON', 'false', sub () { JSON->false };
+monkey_patch 'Mojo::JSON', 'true',  sub () { $TRUE };
+monkey_patch 'Mojo::JSON', 'false', sub () { $FALSE };
 
 =head1 NAME
 
@@ -65,17 +67,6 @@ will encode it to C<null>. See below for more specifics.
 
 As of this writing, the author has found the following incompatibilities:
 
-=head2 Boolean Stringification
-
-If L<Cpanel::JSON::XS> is loaded by L<JSON::MaybeXS> (the default if available),
-the L<Mojo::JSON/true> and L<Mojo::JSON/false> booleans will stringify to
-C<"true"> and C<"false">. However, when using L<JSON::XS>, or L<JSON::PP>, they
-will stringify to C<"1"> or C<"0">, like in L<Mojo::JSON>.
-
- print Mojo::JSON::false;
- # JSON::XS, JSON::PP, or Mojo::JSON: 0
- # Cpanel::JSON::XS: false
-
 =head2 Object Conversion
 
 Both L<JSON::MaybeXS> and L<Mojo::JSON> will attempt to call the TO_JSON method
@@ -113,11 +104,18 @@ does not. This does not affect decoding of the resulting JSON.
 =head2 inf and nan
 
 L<Mojo::JSON> encodes C<inf> and C<nan> to strings, whereas L<JSON::MaybeXS>
-will encode them as numbers (barewords) producing invalid JSON.
+will encode them differently depending which module is loaded. If it loads
+L<Cpanel::JSON::XS> (the default if available) version 3.0108 or greater, it
+will encode them as C<null> or strings, depending on a compilation option (the
+default is C<null>). However, older versions of L<Cpanel::JSON::XS> or any
+version of L<JSON::XS> or L<JSON::PP> will encode them as numbers (barewords)
+producing invalid JSON.
 
  print encode_json([9**9**9, -sin 9**9**9]);
  # Mojo::JSON: ["inf","nan"]
- # JSON::MaybeXS: [inf,nan]
+ # Cpanel::JSON::XS: [null,null] (or ["inf","nan"] if compiled with
+ -DSTRINGIFY_INFNAN)
+ # JSON::XS or JSON::PP: [inf,nan]
 
 =head2 Upgraded Numbers
 

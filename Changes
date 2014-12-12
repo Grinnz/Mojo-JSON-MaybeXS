@@ -1,4 +1,9 @@
 {{$NEXT}}
+  - Preload JSON booleans for true and false subs
+  - Updated tests and documentation for Cpanel::JSON::XS 3.0108
+    - inf and nan encoding
+    - upgraded number encoding
+    - removed doc section on boolean stringification differences
 
 0.005     2014-12-09 18:05:21-05:00 America/New_York
   - Enable allow_unknown option

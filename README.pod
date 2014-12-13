@@ -81,7 +81,7 @@ does not. This does not affect decoding of the resulting JSON.
 
 L<Mojo::JSON> encodes C<inf> and C<nan> to strings, whereas L<JSON::MaybeXS>
 will encode them differently depending which module is loaded. If it loads
-L<Cpanel::JSON::XS> (the default if available) version 3.0109 or greater, it
+L<Cpanel::JSON::XS> (the default if available) version 3.0111 or greater, it
 will encode them as C<null> or strings, depending on a compilation option (the
 default is C<null>). However, L<JSON::XS> or L<JSON::PP> will encode them as
 numbers (barewords) producing invalid JSON.

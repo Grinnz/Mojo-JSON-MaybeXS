@@ -15,6 +15,11 @@ my $TEXT = JSON::MaybeXS->new(utf8 => 0, allow_nonref => 1,
 my $TRUE = JSON->true;
 my $FALSE = JSON->false;
 
+if (JSON eq 'Cpanel::JSON::XS' && $Cpanel::JSON::XS::VERSION >= 3.0112) {
+	$BINARY->stringify_infnan;
+	$TEXT->stringify_infnan;
+}
+
 monkey_patch 'Mojo::JSON', 'encode_json', sub { $BINARY->encode(shift) };
 monkey_patch 'Mojo::JSON', 'decode_json', sub { $BINARY->decode(shift) };
 
@@ -65,6 +70,10 @@ JSON to better match the behavior of L<Mojo::JSON>; in most cases, where
 L<Mojo::JSON> would stringify a reference, L<JSON::MaybeXS> with these settings
 will encode it to C<null>. See below for more specifics.
 
+If L<Cpanel::JSON::XS> version 3.0112 or greater is loaded, it will be used
+with the option C<stringify_infnan> as well, to match the behavior of
+L<Mojo::JSON>.
+
 As of this writing, the author has found the following incompatibilities:
 
 =head2 Object Conversion
@@ -105,14 +114,12 @@ does not. This does not affect decoding of the resulting JSON.
 
 L<Mojo::JSON> encodes C<inf> and C<nan> to strings, whereas L<JSON::MaybeXS>
 will encode them differently depending which module is loaded. If it loads
-L<Cpanel::JSON::XS> (the default if available) version 3.0111 or greater, it
-will encode them as C<null> or strings, depending on a compilation option (the
-default is C<null>). However, L<JSON::XS> or L<JSON::PP> will encode them as
-numbers (barewords) producing invalid JSON.
+L<Cpanel::JSON::XS> (the default if available) version 3.0112 or greater, it
+will also stringify C<inf> and C<nan>. However, L<JSON::XS> or L<JSON::PP>
+will encode them as numbers (barewords) producing invalid JSON.
 
  print encode_json([9**9**9, -sin 9**9**9]);
- # Mojo::JSON: ["inf","nan"]
- # Cpanel::JSON::XS: [null,null] (or ["inf","nan"] if compiled with -DSTRINGIFY_INFNAN)
+ # Mojo::JSON or Cpanel::JSON::XS >= 3.0112: ["inf","nan"] (on Linux)
  # JSON::XS or JSON::PP: [inf,nan]
 
 =head2 Upgraded Numbers
@@ -127,7 +134,7 @@ regardless of whether it has been used as a string.
  my ($num1, $num2) = (13, 14);
  my $str = "$num1";
  print encode_json([$num1, $num2, $str]);
- # Mojo::JSON or Cpanel::JSON::XS: [13,14,"13"]
+ # Mojo::JSON or Cpanel::JSON::XS >= 3.0109: [13,14,"13"]
  # JSON::XS or JSON::PP: ["13",14,"13"]
 
 =head1 BUGS

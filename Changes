@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.007     2014-12-14 16:49:55-05:00 America/New_York
   - Added Cpanel::JSON::XS 3.0112 to recommended prereqs
   - Enabled new Cpanel::JSON::XS stringify_infnan option where supported
 

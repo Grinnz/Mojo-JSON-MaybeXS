@@ -5,3 +5,6 @@ recommends 'Cpanel::JSON::XS' => '3.0112'; # inf/nan handled correctly
 test_requires 'Test::More' => '0.88'; # for done_testing
 test_requires 'Scalar::Util';
 author_requires 'Test::Without::Module' => '0.17';
+author_requires 'Cpanel::JSON::XS' => '3.0112';
+author_requires 'JSON::XS';
+author_requires 'JSON::PP';

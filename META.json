@@ -1,0 +1,68 @@
+{
+   "abstract" : "use JSON::MaybeXS as the JSON encoder for Mojolicious",
+   "author" : [
+      "Dan Book <dbook@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 5.036, CPAN::Meta::Converter version 2.150001",
+   "license" : [
+      "artistic_2"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : 2
+   },
+   "name" : "Mojo-JSON-MaybeXS",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Cpanel::JSON::XS" : "3.0112",
+            "Dist::Zilla::PluginBundle::Author::DBOOK" : "0.003",
+            "JSON::PP" : "0",
+            "JSON::XS" : "0",
+            "Test::Without::Module" : "0.17"
+         }
+      },
+      "runtime" : {
+         "recommends" : {
+            "Cpanel::JSON::XS" : "3.0112"
+         },
+         "requires" : {
+            "JSON::MaybeXS" : "1.001",
+            "Mojolicious" : "5.66",
+            "perl" : "5.010001"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Scalar::Util" : "0",
+            "Test::More" : "0.88"
+         }
+      }
+   },
+   "provides" : {
+      "Mojo::JSON::MaybeXS" : {
+         "file" : "lib/Mojo/JSON/MaybeXS.pm",
+         "version" : "0.008"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/Grinnz/Mojo-JSON-MaybeXS/issues"
+      },
+      "homepage" : "https://github.com/Grinnz/Mojo-JSON-MaybeXS",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/Grinnz/Mojo-JSON-MaybeXS.git",
+         "web" : "https://github.com/Grinnz/Mojo-JSON-MaybeXS"
+      }
+   },
+   "version" : "0.008"
+}
+

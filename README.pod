@@ -124,7 +124,7 @@ Sebastian Riedel, author of L<Mojolicious>, for basic implementation.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2014, Dan Book.
+Copyright 2015, Dan Book.
 
 This library is free software; you may redistribute it and/or modify it under
 the terms of the Artistic License version 2.0.

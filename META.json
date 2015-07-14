@@ -4,7 +4,7 @@
       "Dan Book <dbook@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 5.036, CPAN::Meta::Converter version 2.150001",
+   "generated_by" : "Dist::Zilla version 5.037, CPAN::Meta::Converter version 2.150005",
    "license" : [
       "artistic_2"
    ],
@@ -22,7 +22,7 @@
       "develop" : {
          "requires" : {
             "Cpanel::JSON::XS" : "3.0112",
-            "Dist::Zilla::PluginBundle::Author::DBOOK" : "0.003",
+            "Dist::Zilla::PluginBundle::Author::DBOOK" : "0.005",
             "JSON::PP" : "0",
             "JSON::XS" : "0",
             "Test::Without::Module" : "0.17"

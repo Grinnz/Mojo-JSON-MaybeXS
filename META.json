@@ -4,7 +4,7 @@
       "Dan Book <dbook@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 5.037, CPAN::Meta::Converter version 2.150005",
+   "generated_by" : "Dist::Zilla version 5.039, CPAN::Meta::Converter version 2.150005",
    "license" : [
       "artistic_2"
    ],
@@ -13,18 +13,29 @@
       "version" : 2
    },
    "name" : "Mojo-JSON-MaybeXS",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "xt",
+         "inc",
+         "share",
+         "eg",
+         "examples"
+      ]
+   },
    "prereqs" : {
       "configure" : {
          "requires" : {
-            "ExtUtils::MakeMaker" : "0"
+            "Module::Build::Tiny" : "0.034"
          }
       },
       "develop" : {
          "requires" : {
             "Cpanel::JSON::XS" : "3.0112",
-            "Dist::Zilla::PluginBundle::Author::DBOOK" : "0.005",
+            "Dist::Zilla::PluginBundle::Author::DBOOK" : "0.016",
             "JSON::PP" : "0",
             "JSON::XS" : "0",
+            "Test::Pod" : "1.41",
             "Test::Without::Module" : "0.17"
          }
       },
@@ -48,7 +59,7 @@
    "provides" : {
       "Mojo::JSON::MaybeXS" : {
          "file" : "lib/Mojo/JSON/MaybeXS.pm",
-         "version" : "0.008"
+         "version" : "0.009"
       }
    },
    "release_status" : "stable",
@@ -63,6 +74,10 @@
          "web" : "https://github.com/Grinnz/Mojo-JSON-MaybeXS"
       }
    },
-   "version" : "0.008"
+   "version" : "0.009",
+   "x_contributors" : [
+      "Dan Book <grinnz@grinnz.com>",
+      "Grinnz <grinnz@gmail.com>"
+   ]
 }
 

@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.009     2015-09-06 17:32:56 EDT
   - Change installer to Module::Build::Tiny
   - Better examples in synopsis for use with morbo and hypnotoad
 

@@ -17,10 +17,10 @@ Mojo::JSON::MaybeXS - use JSON::MaybeXS as the JSON encoder for Mojolicious
 
 =head1 DESCRIPTION
 
-L<Mojo::JSON::MaybeXS> is a monkey-patch module for using L<JSON::MaybeXS> in
-place of L<Mojo::JSON> in a L<Mojolicious> application, or in a standalone
-capacity. It must be loaded before L<Mojo::JSON> so the new functions will be
-properly exported.
+L<Mojo::JSON::MaybeXS> is a monkey-patch module for using L<JSON::MaybeXS> as
+the JSON encoder for a L<Mojolicious> application, or anything else using
+L<Mojo::JSON>. It must be loaded before L<Mojo::JSON> so the new functions will
+be properly exported.
 
 =head1 CAVEATS
 

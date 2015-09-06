@@ -17,7 +17,8 @@ my $FALSE = JSON->false;
 
 {
 	local $@;
-	if (JSON eq 'Cpanel::JSON::XS' && eval { Cpanel::JSON::XS->VERSION('3.0112'); 1 }) {
+	if (JSON eq 'Cpanel::JSON::XS'
+	    and eval { Cpanel::JSON::XS->VERSION('3.0112'); 1 }) {
 		$BINARY->stringify_infnan;
 		$TEXT->stringify_infnan;
 	}

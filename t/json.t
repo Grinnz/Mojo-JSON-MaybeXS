@@ -8,7 +8,9 @@ has 'something' => sub { {} };
 sub TO_JSON { shift->something }
 
 package main;
-use Mojo::Base -strict;
+use strict;
+use warnings;
+use utf8;
 
 use Test::More;
 use Mojo::JSON::MaybeXS;

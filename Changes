@@ -1,5 +1,6 @@
 {{$NEXT}}
   - Change installer to Module::Build::Tiny
+  - Better examples in synopsis for use with morbo and hypnotoad
 
 0.008     2015-07-13 20:25:16 EDT
   - Update distribution metadata

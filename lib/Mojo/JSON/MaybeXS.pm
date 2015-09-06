@@ -15,9 +15,12 @@ my $TEXT = JSON::MaybeXS->new(utf8 => 0, allow_nonref => 1,
 my $TRUE = JSON->true;
 my $FALSE = JSON->false;
 
-if (JSON eq 'Cpanel::JSON::XS' && $Cpanel::JSON::XS::VERSION >= 3.0112) {
-	$BINARY->stringify_infnan;
-	$TEXT->stringify_infnan;
+{
+	local $@;
+	if (JSON eq 'Cpanel::JSON::XS' && eval { Cpanel::JSON::XS->VERSION('3.0112'); 1 }) {
+		$BINARY->stringify_infnan;
+		$TEXT->stringify_infnan;
+	}
 }
 
 monkey_patch 'Mojo::JSON', 'encode_json', sub { $BINARY->encode(shift) };
@@ -28,6 +31,8 @@ monkey_patch 'Mojo::JSON', 'from_json', sub { $TEXT->decode(shift) };
 
 monkey_patch 'Mojo::JSON', 'true',  sub () { $TRUE };
 monkey_patch 'Mojo::JSON', 'false', sub () { $FALSE };
+
+1;
 
 =head1 NAME
 
@@ -160,7 +165,3 @@ the terms of the Artistic License version 2.0.
 =head1 SEE ALSO
 
 L<Mojo::JSON>, L<JSON::MaybeXS>, L<Cpanel::JSON::XS>, L<JSON::XS>, L<JSON::PP>
-
-=cut
-
-1;

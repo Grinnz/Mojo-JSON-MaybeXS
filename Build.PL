@@ -77,7 +77,7 @@ EOW
         "Dan Book <dbook\@cpan.org>"
       ],
       "dist_name" => "Mojo-JSON-MaybeXS",
-      "dist_version" => "0.009",
+      "dist_version" => "0.010",
       "license" => "artistic_2",
       "module_name" => "Mojo::JSON::MaybeXS",
       "recommends" => {

@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+0.010     2015-12-02 14:54:33 EST
+  - Update tests for blessed reference stringification in Cpanel::JSON::XS 3.0207
+
 0.009     2015-09-06 17:32:56 EDT
   - Change installer to Module::Build::Tiny
   - Better examples in synopsis for use with morbo and hypnotoad

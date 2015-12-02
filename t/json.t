@@ -19,6 +19,14 @@ use Mojo::JSON qw(decode_json encode_json false from_json j to_json true);
 use Mojo::Util 'encode';
 use Scalar::Util 'dualvar';
 
+sub _cpanel_version {
+  my $version = shift;
+  return 0 unless Mojo::JSON::MaybeXS::JSON eq 'Cpanel::JSON::XS';
+  return 1 unless $version;
+  local $@;
+  return eval { Cpanel::JSON::XS->VERSION($version); 1 } ? 1 : 0;
+}
+
 # Decode array
 my $array = decode_json '[]';
 is_deeply $array, [], 'decode []';
@@ -261,7 +269,11 @@ is_deeply from_json(to_json(["\xe9"])), ["\xe9"], 'successful roundtrip';
 
 # Blessed reference
 $bytes = encode_json [b('test')];
-is_deeply decode_json($bytes), [undef], 'successful roundtrip';
+if (_cpanel_version('3.0202')) {
+  is_deeply decode_json($bytes), ['test'], 'successful roundtrip';
+} else {
+  is_deeply decode_json($bytes), [undef], 'successful roundtrip';
+}
 
 # Blessed reference with TO_JSON method
 $bytes = encode_json(JSONTest->new);
@@ -295,18 +307,17 @@ is false + 0, 0, 'right numeric value';
 # Upgraded numbers
 my $num = 3;
 my $str = "$num";
-if (Mojo::JSON::MaybeXS::JSON eq 'Cpanel::JSON::XS'
-  and $Cpanel::JSON::XS::VERSION >= 3.0108) {
-	is encode_json({test => [$num, $str]}), '{"test":[3,"3"]}',
-	  'upgraded number detected';
-	$num = 3.21;
-	$str = "$num";
-	is encode_json({test => [$num, $str]}), '{"test":[3.21,"3.21"]}',
-	  'upgraded number detected';
-	$str = '0 but true';
-	$num = 1 + $str;
-	is encode_json({test => [$num, $str]}), '{"test":[1,"0 but true"]}',
-	  'upgraded number detected';
+if (_cpanel_version('3.0108')) {
+  is encode_json({test => [$num, $str]}), '{"test":[3,"3"]}',
+    'upgraded number detected';
+  $num = 3.21;
+  $str = "$num";
+  is encode_json({test => [$num, $str]}), '{"test":[3.21,"3.21"]}',
+    'upgraded number detected';
+  $str = '0 but true';
+  $num = 1 + $str;
+  is encode_json({test => [$num, $str]}), '{"test":[1,"0 but true"]}',
+    'upgraded number detected';
 }
 
 # Upgraded string
@@ -326,13 +337,12 @@ is encode_json($mixed), '[3,"three","3",0,"0"]',
 is encode_json($mixed), '[3,"three","3",0,"0"]',
   'all have been detected correctly again';
 
-if (Mojo::JSON::MaybeXS::JSON eq 'Cpanel::JSON::XS'
-  and $Cpanel::JSON::XS::VERSION >= 3.0108) {
-	# "inf" and "nan"
-	like encode_json({test => 9**9**9}), qr/^{"test":(null|".*")}$/,
-	  'encode "inf" as null or string';
-	like encode_json({test => -sin(9**9**9)}), qr/^{"test":(null|".*")}$/,
-	  'encode "nan" as null or string';
+if (_cpanel_version('3.0108')) {
+  # "inf" and "nan"
+  like encode_json({test => 9**9**9}), qr/^{"test":(null|".*")}$/,
+    'encode "inf" as null or string';
+  like encode_json({test => -sin(9**9**9)}), qr/^{"test":(null|".*")}$/,
+    'encode "nan" as null or string';
 }
 
 # "null"
@@ -340,89 +350,88 @@ is j('null'), undef, 'decode null';
 
 # Errors
 if (Mojo::JSON::MaybeXS::JSON eq 'JSON::PP') {
-	eval { decode_json 'test' };
-	like $@, qr/'true' expected/, 'right error';
-	eval { decode_json b('["\\ud800"]')->encode };
-	like $@, qr/malformed JSON string/, 'right error';
-	eval { decode_json b('["\\udf46"]')->encode };
-	like $@, qr/malformed JSON string/, 'right error';
-	eval { decode_json '[[]' };
-	like $@, qr/, or ] expected while parsing array/, 'right error';
-	eval { decode_json '{{}' };
-	like $@, qr/unexpected end of string while parsing JSON string/, 'right error';
-	eval { decode_json "[\"foo\x00]" };
-	like $@, qr/invalid character encountered while parsing JSON string/, 'right error';
-	eval { decode_json '{"foo":"bar"{' };
-	like $@, qr/, or } expected while parsing object\/hash/, 'right error';
-	eval { decode_json '{"foo""bar"}' };
-	like $@, qr/':' expected/, 'right error';
-	eval { decode_json '[[]...' };
-	like $@, qr/, or ] expected while parsing array/, 'right error';
-	eval { decode_json '{{}...' };
-	like $@, qr/unexpected end of string while parsing JSON string/, 'right error';
-	eval { decode_json '[nan]' };
-	like $@, qr/'null' expected/, 'right error';
-	eval { decode_json '["foo]' };
-	like $@, qr/unexpected end of string while parsing JSON string/, 'right error';
-	eval { decode_json '{"foo":"bar"}lala' };
-	like $@, qr/garbage after JSON object/, 'right error';
-	eval { decode_json '' };
-	like $@, qr/malformed JSON string/, 'right error';
-	eval { decode_json "[\"foo\",\n\"bar\"]lala" };
-	like $@, qr/garbage after JSON object/, 'right error';
-	eval { decode_json "[\"foo\",\n\"bar\",\n\"bazra\"]lalala" };
-	like $@, qr/garbage after JSON object/, 'right error';
-	eval { decode_json '["♥"]' };
-	like $@, qr/Wide character in subroutine entry/, 'right error';
-	eval { decode_json encode('Shift_JIS', 'やった') };
-	like $@, qr/malformed JSON string/, 'right error';
-	is j('{'), undef, 'syntax error';
-	eval { decode_json "[\"foo\",\n\"bar\",\n\"bazra\"]lalala" };
-	like $@, qr/garbage after JSON object/, 'right error';
-	eval { from_json "[\"foo\",\n\"bar\",\n\"bazra\"]lalala" };
-	like $@, qr/garbage after JSON object/, 'right error';
+  eval { decode_json 'test' };
+  like $@, qr/'true' expected/, 'right error';
+  eval { decode_json b('["\\ud800"]')->encode };
+  like $@, qr/malformed JSON string/, 'right error';
+  eval { decode_json b('["\\udf46"]')->encode };
+  like $@, qr/malformed JSON string/, 'right error';
+  eval { decode_json '[[]' };
+  like $@, qr/, or ] expected while parsing array/, 'right error';
+  eval { decode_json '{{}' };
+  like $@, qr/unexpected end of string while parsing JSON string/, 'right error';
+  eval { decode_json "[\"foo\x00]" };
+  like $@, qr/invalid character encountered while parsing JSON string/, 'right error';
+  eval { decode_json '{"foo":"bar"{' };
+  like $@, qr/, or } expected while parsing object\/hash/, 'right error';
+  eval { decode_json '{"foo""bar"}' };
+  like $@, qr/':' expected/, 'right error';
+  eval { decode_json '[[]...' };
+  like $@, qr/, or ] expected while parsing array/, 'right error';
+  eval { decode_json '{{}...' };
+  like $@, qr/unexpected end of string while parsing JSON string/, 'right error';
+  eval { decode_json '[nan]' };
+  like $@, qr/'null' expected/, 'right error';
+  eval { decode_json '["foo]' };
+  like $@, qr/unexpected end of string while parsing JSON string/, 'right error';
+  eval { decode_json '{"foo":"bar"}lala' };
+  like $@, qr/garbage after JSON object/, 'right error';
+  eval { decode_json '' };
+  like $@, qr/malformed JSON string/, 'right error';
+  eval { decode_json "[\"foo\",\n\"bar\"]lala" };
+  like $@, qr/garbage after JSON object/, 'right error';
+  eval { decode_json "[\"foo\",\n\"bar\",\n\"bazra\"]lalala" };
+  like $@, qr/garbage after JSON object/, 'right error';
+  eval { decode_json '["♥"]' };
+  like $@, qr/Wide character in subroutine entry/, 'right error';
+  eval { decode_json encode('Shift_JIS', 'やった') };
+  like $@, qr/malformed JSON string/, 'right error';
+  is j('{'), undef, 'syntax error';
+  eval { decode_json "[\"foo\",\n\"bar\",\n\"bazra\"]lalala" };
+  like $@, qr/garbage after JSON object/, 'right error';
+  eval { from_json "[\"foo\",\n\"bar\",\n\"bazra\"]lalala" };
+  like $@, qr/garbage after JSON object/, 'right error';
 } else { # Cpanel::JSON::XS or JSON::XS
-	eval { decode_json 'test' };
-	like $@, qr/'true' expected/, 'right error';
-	eval { decode_json b('["\\ud800"]')->encode };
-	like $@, qr/malformed JSON string/, 'right error';
-	eval { decode_json b('["\\udf46"]')->encode };
-	like $@, qr/malformed JSON string/, 'right error';
-	eval { decode_json '[[]' };
-	like $@, qr/, or ] expected while parsing array/, 'right error';
-	eval { decode_json '{{}' };
-	like $@, qr/'"' expected/, 'right error';
-	eval { decode_json "[\"foo\x00]" };
-	like $@, qr/unexpected end of string while parsing JSON string/, 'right error';
-	eval { decode_json '{"foo":"bar"{' };
-	like $@, qr/, or } expected while parsing object\/hash/, 'right error';
-	eval { decode_json '{"foo""bar"}' };
-	like $@, qr/':' expected/, 'right error';
-	eval { decode_json '[[]...' };
-	like $@, qr/, or ] expected while parsing array/, 'right error';
-	eval { decode_json '{{}...' };
-	like $@, qr/'"' expected/, 'right error';
-	eval { decode_json '[nan]' };
-	like $@, qr/'null' expected/, 'right error';
-	eval { decode_json '["foo]' };
-	like $@, qr/unexpected end of string while parsing JSON string/, 'right error';
-	eval { decode_json '{"foo":"bar"}lala' };
-	like $@, qr/garbage after JSON object/, 'right error';
-	eval { decode_json '' };
-	like $@, qr/malformed JSON string/, 'right error';
-	eval { decode_json "[\"foo\",\n\"bar\"]lala" };
-	like $@, qr/garbage after JSON object/, 'right error';
-	eval { decode_json "[\"foo\",\n\"bar\",\n\"bazra\"]lalala" };
-	like $@, qr/garbage after JSON object/, 'right error';
-	eval { decode_json '["♥"]' };
-	like $@, qr/Wide character in subroutine entry/, 'right error';
-	eval { decode_json encode('Shift_JIS', 'やった') };
-	like $@, qr/malformed JSON string/, 'right error';
-	is j('{'), undef, 'syntax error';
-	eval { decode_json "[\"foo\",\n\"bar\",\n\"bazra\"]lalala" };
-	like $@, qr/garbage after JSON object/, 'right error';
-	eval { from_json "[\"foo\",\n\"bar\",\n\"bazra\"]lalala" };
-	like $@, qr/garbage after JSON object/, 'right error';
+  eval { decode_json 'test' };
+  like $@, qr/'true' expected/, 'right error';
+  eval { decode_json b('["\\ud800"]')->encode };
+  like $@, qr/malformed JSON string/, 'right error';
+  eval { decode_json b('["\\udf46"]')->encode };
+  like $@, qr/malformed JSON string/, 'right error';
+  eval { decode_json '[[]' };
+  like $@, qr/, or ] expected while parsing array/, 'right error';
+  eval { decode_json '{{}' };
+  like $@, qr/'"' expected/, 'right error';
+  eval { decode_json "[\"foo\x00]" };
+  like $@, qr/unexpected end of string while parsing JSON string/, 'right error';
+  eval { decode_json '{"foo":"bar"{' };
+  like $@, qr/, or } expected while parsing object\/hash/, 'right error';
+  eval { decode_json '{"foo""bar"}' };
+  like $@, qr/':' expected/, 'right error';
+  eval { decode_json '[[]...' };
+  like $@, qr/, or ] expected while parsing array/, 'right error';
+  eval { decode_json '{{}...' };
+  like $@, qr/'"' expected/, 'right error';
+  eval { decode_json '[nan]' };
+  like $@, qr/'null' expected/, 'right error';
+  eval { decode_json '["foo]' };
+  like $@, qr/unexpected end of string while parsing JSON string/, 'right error';
+  eval { decode_json '{"foo":"bar"}lala' };
+  like $@, qr/garbage after JSON object/, 'right error';
+  eval { decode_json '' };
+  like $@, qr/malformed JSON string/, 'right error';
+  eval { decode_json "[\"foo\",\n\"bar\"]lala" };
+  like $@, qr/garbage after JSON object/, 'right error';
+  eval { decode_json "[\"foo\",\n\"bar\",\n\"bazra\"]lalala" };
+  like $@, qr/garbage after JSON object/, 'right error';
+  eval { decode_json '["♥"]' };
+  like $@, qr/Wide character in subroutine entry/, 'right error';
+  eval { decode_json encode('Shift_JIS', 'やった') };
+  like $@, qr/malformed JSON string/, 'right error';
+  is j('{'), undef, 'syntax error';
+  eval { decode_json "[\"foo\",\n\"bar\",\n\"bazra\"]lalala" };
+  like $@, qr/garbage after JSON object/, 'right error';
+  eval { from_json "[\"foo\",\n\"bar\",\n\"bazra\"]lalala" };
+  like $@, qr/garbage after JSON object/, 'right error';
 }
-
 done_testing();

@@ -259,7 +259,7 @@ is_deeply from_json(to_json(["\xe9"])), ["\xe9"], 'successful roundtrip';
 
 # Blessed reference
 $bytes = encode_json [b('test')];
-is_deeply decode_json($bytes), [undef], 'successful roundtrip';
+is_deeply decode_json($bytes), ['test'], 'successful roundtrip';
 
 # Blessed reference with TO_JSON method
 $bytes = encode_json(JSONTest->new);

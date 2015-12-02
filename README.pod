@@ -50,12 +50,13 @@ As of this writing, the author has found the following incompatibilities:
 
 Both L<JSON::MaybeXS> and L<Mojo::JSON> will attempt to call the TO_JSON method
 of a blessed reference to produce a JSON-friendly structure. If that method
-does not exist, L<JSON::MaybeXS> will encode the object to C<null>, while
-L<Mojo::JSON> will stringify the object.
+does not exist, L<Mojo::JSON> or L<Cpanel::JSON::XS> version 3.0207 or greater
+will stringify the object, while L<JSON::XS> or L<JSON::PP> will always encode
+it to C<null>.
 
  print encode_json([DateTime->now]);
- # Mojo::JSON: ["2014-11-30T04:31:13"]
- # JSON::MaybeXS: [null]
+ # Mojo::JSON or Cpanel::JSON::XS >= 3.0207: ["2014-11-30T04:31:13"]
+ # JSON::XS or JSON::PP: [null]
 
 =head2 Unblessed References
 

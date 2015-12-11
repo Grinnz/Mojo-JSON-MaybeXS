@@ -7,6 +7,10 @@ has 'something' => sub { {} };
 
 sub TO_JSON { shift->something }
 
+package JSONTest2;
+use Mojo::Base -base;
+use overload '&' => sub {die}, '""' => sub {'works!'};
+
 package main;
 use strict;
 use warnings;
@@ -26,6 +30,11 @@ sub _cpanel_version {
   local $@;
   return eval { Cpanel::JSON::XS->VERSION($version); 1 } ? 1 : 0;
 }
+
+# Diagnostic output to display JSON encoder in use
+my $class = Mojo::JSON::MaybeXS::JSON;
+my $class_version = $class->VERSION;
+diag "Using $class version $class_version";
 
 # Decode array
 my $array = decode_json '[]';
@@ -329,6 +338,13 @@ is encode_json({test => [$num, $str]}), '{"test":[23,"bar"]}',
 # dualvar
 my $dual = dualvar 23, 'twenty three';
 is encode_json([$dual]), '["twenty three"]', 'dualvar stringified';
+
+# Other reference types
+my $sub = sub { };
+is encode_json([$sub]), "[null]", 'code reference not stringified';
+if (_cpanel_version('3.0202')) {
+  is encode_json([JSONTest2->new]), "[\"works!\"]", 'object stringified';
+}
 
 # Ensure numbers and strings are not upgraded
 my $mixed = [3, 'three', '3', 0, "0"];

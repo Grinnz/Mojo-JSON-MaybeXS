@@ -58,7 +58,7 @@
    "provides" : {
       "Mojo::JSON::MaybeXS" : {
          "file" : "lib/Mojo/JSON/MaybeXS.pm",
-         "version" : "0.010"
+         "version" : "0.011"
       }
    },
    "release_status" : "stable",
@@ -73,7 +73,7 @@
          "web" : "https://github.com/Grinnz/Mojo-JSON-MaybeXS"
       }
    },
-   "version" : "0.010",
+   "version" : "0.011",
    "x_contributors" : [
       "Dan Book <grinnz@grinnz.com>",
       "Grinnz <grinnz@gmail.com>"

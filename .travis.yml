@@ -8,4 +8,6 @@ perl:
   - "5.12"
   - "5.10"
 install: cpanm --quiet --installdeps --notest --with-develop .
-before_script: cp xt/author/*.t t/
+script:
+  - perl Build.PL && ./Build test
+  - prove -lr xt/author/

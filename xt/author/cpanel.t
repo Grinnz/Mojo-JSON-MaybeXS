@@ -200,7 +200,7 @@ is $bytes, '[1,-2]', 'encode [1, -2]';
 $bytes = encode_json ['10e12', [2]];
 is $bytes, '["10e12",[2]]', 'encode [\'10e12\', [2]]';
 $bytes = encode_json [10e12, [2]];
-is $bytes, '[10000000000000,[2]]', 'encode [10e12, [2]]';
+is $bytes, '[10000000000000.0,[2]]', 'encode [10e12, [2]]';
 $bytes = encode_json [37.7668, [20]];
 is $bytes, '[37.7668,[20]]', 'encode [37.7668, [20]]';
 $bytes = encode_json 0;
@@ -309,7 +309,7 @@ is encode_json({test => [$num, $str]}), '{"test":[1,"0 but true"]}',
 # Upgraded string
 $str = "bar";
 { no warnings 'numeric'; $num = 23 + $str }
-is encode_json({test => [$num, $str]}), '{"test":[23,"bar"]}',
+is encode_json({test => [$num, $str]}), '{"test":[23.0,"bar"]}',
   'upgraded string detected';
 
 # dualvar

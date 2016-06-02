@@ -31,7 +31,7 @@
       },
       "develop" : {
          "requires" : {
-            "Cpanel::JSON::XS" : "3.0207",
+            "Cpanel::JSON::XS" : "3.0214",
             "JSON::PP" : "0",
             "JSON::XS" : "0",
             "Test::Pod" : "1.41",

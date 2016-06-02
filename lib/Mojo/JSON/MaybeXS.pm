@@ -51,7 +51,7 @@ Mojo::JSON::MaybeXS - use JSON::MaybeXS as the JSON encoder for Mojolicious
  use Mojo::JSON qw/encode_json decode_json true false/;
  
  # Preload for scripts using Mojo::JSON
- $ perl -MMojo::JSON::MaybeXS $(which morbo) myapp.pl
+ $ perl -MMojo::JSON::MaybeXS -S morbo myapp.pl
  
  # Must be set in environment for hypnotoad
  $ PERL5OPT=-MMojo::JSON::MaybeXS hypnotoad myapp.pl

@@ -63,7 +63,7 @@
    "provides" : {
       "Mojo::JSON::MaybeXS" : {
          "file" : "lib/Mojo/JSON/MaybeXS.pm",
-         "version" : "0.011"
+         "version" : "0.012"
       }
    },
    "release_status" : "stable",
@@ -78,7 +78,7 @@
          "web" : "https://github.com/Grinnz/Mojo-JSON-MaybeXS"
       }
    },
-   "version" : "0.011",
+   "version" : "0.012",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.024000"
@@ -244,7 +244,7 @@
                   "branch" : null,
                   "changelog" : "Changes",
                   "signed" : 0,
-                  "tag" : "v0.011",
+                  "tag" : "v0.012",
                   "tag_format" : "v%v",
                   "tag_message" : "v%v"
                },

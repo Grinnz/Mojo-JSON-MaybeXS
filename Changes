@@ -1,5 +1,6 @@
 {{$NEXT}}
   - escape_slash option will now be enabled if the backend is JSON::PP or Cpanel::JSON::XS >= 3.0206
+  - Fix tests to handle trailing .0 added to NV ("numeric non-integer") by Cpanel::JSON::XS >= 3.0214
 
 0.010     2015-12-02 14:54:33 EST
   - Update tests for blessed reference stringification in Cpanel::JSON::XS 3.0207

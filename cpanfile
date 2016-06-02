@@ -8,3 +8,4 @@ author_requires 'Test::Without::Module' => '0.17';
 author_requires 'Cpanel::JSON::XS' => '3.0207';
 author_requires 'JSON::XS';
 author_requires 'JSON::PP';
+configure_requires 'Module::Build::Tiny';

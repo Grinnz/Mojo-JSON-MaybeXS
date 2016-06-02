@@ -40,9 +40,11 @@ JSON to better match the behavior of L<Mojo::JSON>; in most cases, where
 L<Mojo::JSON> would stringify a reference, L<JSON::MaybeXS> with these settings
 will encode it to C<null>. See below for more specifics.
 
-If L<Cpanel::JSON::XS> version 3.0112 or greater is loaded, it will be used
-with the option C<stringify_infnan> as well, to match the behavior of
-L<Mojo::JSON>.
+To better match the behavior of L<Mojo::JSON>, certain options may be enabled
+depending on the backend that is used. If L<Cpanel::JSON::XS> version 3.0112 or
+greater is loaded, it will be used with the option C<stringify_infnan>. If
+either L<Cpanel::JSON::XS> of at least version 3.0206 or L<JSON::PP> is loaded,
+it will be used with the option C<escape_slash>.
 
 As of this writing, the author has found the following incompatibilities:
 
@@ -73,21 +75,22 @@ value. Other references (code, filehandle, etc) will be stringified.
 =head2 Escapes
 
 L<Mojo::JSON> currently escapes the slash character C</> for security reasons,
-as well as the unicode characters C<u2028> and C<u2029>, while L<JSON::MaybeXS>
-does not. This does not affect decoding of the resulting JSON.
+as well as the unicode characters C<u2028> and C<u2029>. L<Cpanel::JSON::XS>
+version 3.0206 or greater and L<JSON::PP> will have the option set to escape
+the slash character, and L<JSON::XS> does not escape these characters. This
+does not affect decoding of the resulting JSON.
 
  print encode_json(["/\x{2028}/\x{2029}"]);
  # Mojo::JSON: ["\/\u2028\/\u2029"]
- # JSON::MaybeXS: ["/ / "]
+ # Cpanel::JSON::XS >= 3.0206 or JSON::PP: ["\/ \/ "]
+ # JSON::XS: ["/ / "]
  # Both decode to arrayref containing: "/\x{2028}/\x{2029}"
 
 =head2 inf and nan
 
-L<Mojo::JSON> encodes C<inf> and C<nan> to strings, whereas L<JSON::MaybeXS>
-will encode them differently depending which module is loaded. If it loads
-L<Cpanel::JSON::XS> (the default if available) version 3.0112 or greater, it
-will also stringify C<inf> and C<nan>. However, L<JSON::XS> or L<JSON::PP>
-will encode them as numbers (barewords) producing invalid JSON.
+L<Mojo::JSON> encodes C<inf> and C<nan> to strings. L<Cpanel::JSON::XS> version
+3.0112 or greater will also stringify C<inf> and C<nan>. However, L<JSON::XS>
+or L<JSON::PP> will encode them as numbers (barewords) producing invalid JSON.
 
  print encode_json([9**9**9, -sin 9**9**9]);
  # Mojo::JSON or Cpanel::JSON::XS >= 3.0112: ["inf","nan"] (on Linux)

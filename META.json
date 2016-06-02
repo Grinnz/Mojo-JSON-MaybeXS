@@ -81,7 +81,7 @@
    "version" : "0.011",
    "x_Dist_Zilla" : {
       "perl" : {
-         "version" : "5.022000"
+         "version" : "5.024000"
       },
       "plugins" : [
          {
@@ -144,7 +144,7 @@
                }
             },
             "name" : "@Author::DBOOK/Git::Contributors",
-            "version" : "0.022"
+            "version" : "0.023"
          },
          {
             "class" : "Dist::Zilla::Plugin::MetaNoIndex",
@@ -357,7 +357,7 @@
          {
             "class" : "Dist::Zilla::Plugin::CopyFilesFromBuild",
             "name" : "@Author::DBOOK/CopyFilesFromBuild",
-            "version" : "0.161150"
+            "version" : "0.161350"
          },
          {
             "class" : "Dist::Zilla::Plugin::PruneCruft",

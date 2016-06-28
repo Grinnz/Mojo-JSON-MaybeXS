@@ -30,11 +30,11 @@ if (JSON eq 'Cpanel::JSON::XS') {
 	$TEXT->escape_slash;
 }
 
-monkey_patch 'Mojo::JSON', 'encode_json', sub { $BINARY->encode(shift) };
-monkey_patch 'Mojo::JSON', 'decode_json', sub { $BINARY->decode(shift) };
+monkey_patch 'Mojo::JSON', 'encode_json', sub { $BINARY->encode($_[0]) };
+monkey_patch 'Mojo::JSON', 'decode_json', sub { $BINARY->decode($_[0]) };
 
-monkey_patch 'Mojo::JSON', 'to_json',   sub { $TEXT->encode(shift) };
-monkey_patch 'Mojo::JSON', 'from_json', sub { $TEXT->decode(shift) };
+monkey_patch 'Mojo::JSON', 'to_json',   sub { $TEXT->encode($_[0]) };
+monkey_patch 'Mojo::JSON', 'from_json', sub { $TEXT->decode($_[0]) };
 
 monkey_patch 'Mojo::JSON', 'true',  sub () { $TRUE };
 monkey_patch 'Mojo::JSON', 'false', sub () { $FALSE };

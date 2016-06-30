@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.012     2016-06-30 17:44:11 EDT
   - Enable canonical option for all backends to match Mojo::JSON behavior in Mojolicious 6.58+
 
 0.011     2016-06-02 14:15:24 EDT

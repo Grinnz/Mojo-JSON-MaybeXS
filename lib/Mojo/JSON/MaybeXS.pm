@@ -6,7 +6,7 @@ use Mojo::Util 'monkey_patch';
 use JSON::MaybeXS 'JSON';
 use Mojo::JSON ();
 
-our $VERSION = '1.000';
+our $VERSION = '1.001';
 
 my $BINARY = JSON::MaybeXS->new(utf8 => 1, canonical => 1, allow_nonref => 1,
 	allow_unknown => 1, allow_blessed => 1, convert_blessed => 1);

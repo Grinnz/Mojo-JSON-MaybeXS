@@ -112,6 +112,17 @@ regardless of whether it has been used as a string.
  # Mojo::JSON or Cpanel::JSON::XS >= 3.0109: [13,14,"13"]
  # JSON::XS or JSON::PP: ["13",14,"13"]
 
+=head2 Duplicate Keys
+
+L<Mojo::JSON>, L<JSON::XS>, and L<JSON::PP> will silently accept duplicate keys
+in the same JSON object when decoding a JSON string. L<Cpanel::JSON::XS>
+version 3.0235 or greater will throw an exception if duplicate keys are
+encountered.
+
+ print dumper decode_json('{"foo":1, "bar":2, "foo":3}');
+ # Mojo::JSON, JSON::XS, or JSON::PP: { bar => 2, foo => 3 }
+ # Cpanel::JSON::XS >= 3.0235: "Duplicate keys not allowed" exception
+
 =head1 BUGS
 
 This is a monkey-patch of one of a few possible modules into another, and they

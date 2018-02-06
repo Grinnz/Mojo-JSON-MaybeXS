@@ -583,6 +583,6 @@
       "Dan Book <grinnz@grinnz.com>",
       "Grinnz <grinnz@gmail.com>"
    ],
-   "x_serialization_backend" : "Cpanel::JSON::XS version 3.0239"
+   "x_serialization_backend" : "Cpanel::JSON::XS version 4.00"
 }
 

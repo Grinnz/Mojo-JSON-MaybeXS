@@ -88,7 +88,7 @@ EOW
       "license" => "artistic_2",
       "module_name" => "Mojo::JSON::MaybeXS",
       "recommends" => {
-        "Cpanel::JSON::XS" => "3.0207"
+        "Cpanel::JSON::XS" => "4.09"
       },
       "recursive_test_files" => 1,
       "requires" => {
